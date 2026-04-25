@@ -1,9 +1,16 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from pathlib import Path
+import re
 
 selected_folder = None
 pdf_files = []
+
+def natural_sort_key(path):
+    return [
+        int(text) if text.isdigit() else text.lower()
+        for text in re.split(r'(\d+)', path.name)
+    ]
 
 def choose_folder():
     global selected_folder, pdf_files
@@ -13,7 +20,7 @@ def choose_folder():
         return
 
     selected_folder = Path(folder)
-    pdf_files = sorted(selected_folder.glob("*.pdf"))
+    pdf_files = sorted(selected_folder.glob("*.pdf"), key=natural_sort_key)
 
     list_original.delete(0, tk.END)
     list_new.delete(0, tk.END)
@@ -78,7 +85,6 @@ def rename_files():
             file.rename(new_path)
 
         messagebox.showinfo("완료", "PDF 파일 이름 변경이 완료되었습니다.")
-
         choose_folder()
 
     except Exception as e:
