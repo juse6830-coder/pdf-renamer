@@ -23,7 +23,7 @@ jobs:
       run: pyinstaller --onefile --windowed rename_pdf_gui.py
 
     - name: Upload EXE
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: pdf-renamer
         path: dist/*.exe
